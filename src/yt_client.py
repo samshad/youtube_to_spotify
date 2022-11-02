@@ -66,7 +66,7 @@ def get_playlist_items(yt, playlist_id):
             response = get_nextpage_items(yt, playlist_id, response['nextPageToken'])
             all_items += response['items']
 
-    # store data as preference, I'm using json
+    # store data as preference
     data = {'items': all_items}
 
     with open("../data/playlist_items.json", "w", encoding='utf-8') as f:

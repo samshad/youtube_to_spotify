@@ -1,4 +1,12 @@
-# Youtube to Spotify Playlist Migrator
+# Youtube to Spotify Playlist Migrator ✨
+
+![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)
+![Spotify API](https://img.shields.io/badge/Spotify%20API-v1.0-green.svg)
+![YouTube API](https://img.shields.io/badge/YouTube%20API-v3.0-red.svg)
+![License](https://img.shields.io/badge/license-MIT-yellow.svg)
+![tests](https://img.shields.io/badge/tests-70%20passed-brightgreen.svg)
+
+A Python script to automate migrating songs from a public YouTube playlist to a new playlist in your Spotify account.
 
 ## Prerequisites
 

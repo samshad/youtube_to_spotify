@@ -7,13 +7,15 @@
 # -----------------------------------------------------------------------------
 
 from typing import Optional, List
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel, Field, HttpUrl, ConfigDict
 
 
 class YouTubeSong(BaseModel):
     """
     Represents a song extracted from a YouTube playlist item.
     """
+
+    model_config = ConfigDict(str_strip_whitespace=True)
 
     video_id: str = Field(..., description="Unique YouTube video ID.")
     original_title: str = Field(
@@ -30,14 +32,13 @@ class YouTubeSong(BaseModel):
     )
     video_url: HttpUrl = Field(..., description="URL to the YouTube video.")
 
-    class Config:
-        str_strip_whitespace = True
-
 
 class SpotifyTrack(BaseModel):
     """
     Represents a track found on Spotify.
     """
+
+    model_config = ConfigDict(str_strip_whitespace=True)
 
     uri: str = Field(
         ..., description="Spotify Track URI (e.g., spotify:track:TRACK_ID)."
@@ -55,14 +56,13 @@ class SpotifyTrack(BaseModel):
         None, description="URL to the track on Spotify's website."
     )
 
-    class Config:
-        str_strip_whitespace = True
-
 
 class MigrationResult(BaseModel):
     """
     Represents the result of attempting to migrate a single YouTube song to Spotify.
     """
+
+    model_config = ConfigDict(str_strip_whitespace=True)
 
     youtube_song: YouTubeSong
     spotify_track: Optional[SpotifyTrack] = None
@@ -76,9 +76,6 @@ class MigrationResult(BaseModel):
     message: Optional[str] = Field(
         None, description="Additional details or error message."
     )
-
-    class Config:
-        str_strip_whitespace = True
 
 
 if __name__ == "__main__":

@@ -423,7 +423,7 @@ if __name__ == "__main__":
     logger.info("--- SpotifyClient Test ---")
 
     if not config.validate_configuration():
-        logger.error("Spotify configuration is missing in .env file. Cannot run test.")
+        logger.error("Spotify configuration is missing in .env file. Cannot run tests.")
     else:
         try:
             logger.info(
@@ -489,11 +489,11 @@ if __name__ == "__main__":
                         )
                 else:
                     logger.warning(
-                        "Add Track Test: Skipping add track test because search failed to find a track URI."
+                        "Add Track Test: Skipping add track tests because search failed to find a track URI."
                     )
             else:
                 logger.error(
-                    "Playlist Test: Failed to create or get the test playlist ID."
+                    "Playlist Test: Failed to create or get the tests playlist ID."
                 )
 
         except ValueError as ve:

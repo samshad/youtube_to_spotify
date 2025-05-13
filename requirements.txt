@@ -6,3 +6,5 @@ fuzzywuzzy
 python-Levenshtein
 pydantic
 youtube_title_parse
+pytest
+pytest-mock

@@ -179,14 +179,14 @@ if __name__ == "__main__":
         try:
             yt_client = YouTubeClient(api_key=config.YOUTUBE_API_KEY)
 
-            # Replace with a public playlist ID you want to test with
+            # Replace with a public playlist ID you want to tests with
             # E.g., a popular music chart playlist or one of your own public playlists
             # test_playlist_id = "PLMC9KNkIncKtPzgY-5rmhvj7fax8fdxoj" # Example: Billboard Hot 100
             test_playlist_id = "PL9eEZ8DQbx7XnCd6jSj7lX6U9ToIsr63Y"
 
             if not test_playlist_id:
                 logger.warning(
-                    "Please set a 'test_playlist_id' in the __main__ block of youtube_client.py to test."
+                    "Please set a 'test_playlist_id' in the __main__ block of youtube_client.py to tests."
                 )
             else:
                 logger.info(

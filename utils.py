@@ -106,12 +106,18 @@ def clean_youtube_title(title: str) -> str:
         r"\[.*\blyric video\b.*\]",  # [anything Lyric Video anything]
         r"\(.*\blyrics\b.*\)",  # (anything Lyrics anything)
         r"\[.*\blyrics\b.*\]",  # [anything Lyrics anything]
-        r"\(.*\bofficial audio\b.*\)",  # (anything Official Audio anything)
-        r"\[.*\bofficial audio\b.*\]",  # [anything Official Audio anything]
-        r"\(.*\baudio\b.*\)",  # (anything Audio anything)
-        r"\[.*\baudio\b.*\]",  # [anything Audio anything]
+        r"\(\s*Official Audio\s*\)",  # (Official Audio)
+        r"\[\s*Official Audio\s*\]",
+        r"\(\s*Audio\s*\)",
+        r"\[\s*Audio\s*\]",
+        r"\(\s*Official\s*\)",
+        r"\(.*?\bOfficial Audio\b.*?\)",
+        r"\[.*?\bOfficial Audio\b.*?\]",
+        r"\(.*?\bAudio\b.*?\)",
+        r"\[.*?\bAudio\b.*?\]",
         r"\(.*\bvisualizer\b.*\)",  # (anything Visualizer anything)
         r"\[.*\bvisualizer\b.*\]",  # [anything Visualizer anything]
+        r"\s*\|\s*Visualizer\b.*?",
         r"\(.*\bfull album\b.*\)",  # (Full Album)
         r"\[.*\bfull album\b.*\]",  # [Full Album]
         r"\(.*\blive\b.*\)",  # (Live at...)
@@ -191,19 +197,17 @@ def parse_artist_song_from_title(
     else:  # No result from get_artist_title
         song = cleaned_title  # Assume the whole title is the song name
         if channel_title:
+            _channel_title_stripped = channel_title.strip()  # Strip it first
             cleaned_channel = re.sub(
                 r"\s*(VEVO|Music|Official|Records|Label)$",
                 "",
-                channel_title,
+                _channel_title_stripped,  # Use the stripped version
                 flags=re.IGNORECASE,
-            ).strip()
-            artist = cleaned_channel if cleaned_channel else channel_title
+            ).strip()  # Strip the result of re.sub as well
+            artist = cleaned_channel if cleaned_channel else _channel_title_stripped
 
-    # Final cleanup for artist and song names
     if artist:
-        artist = artist.strip(
-            " \t\n\r-_|[]()"
-        )  # Remove leading/trailing special characters
+        artist = artist.strip(" \t\n\r-_|[]()")
     if song:
         song = song.strip(
             " \t\n\r-_|[]()"
@@ -226,7 +230,7 @@ if __name__ == "__main__":
     # Test logging setup
     setup_logging()
     logger = logging.getLogger(__name__)
-    logger.info("Utils.py: Logging test message.")
+    logger.info("Utils.py: Logging tests message.")
     logger.warning("Utils.py: This is a warning.")
     logger.error("Utils.py: This is an error.", exc_info=True)
 

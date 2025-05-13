@@ -19,13 +19,11 @@ if not ENV_PATH.exists():
     ENV_PATH = Path(".") / ".env"
 load_dotenv(dotenv_path=ENV_PATH)
 
-# API Keys and Credentials
 YOUTUBE_API_KEY: str | None = os.getenv("YOUTUBE_API_KEY")
 SPOTIPY_CLIENT_ID: str | None = os.getenv("SPOTIPY_CLIENT_ID")
 SPOTIPY_CLIENT_SECRET: str | None = os.getenv("SPOTIPY_CLIENT_SECRET")
 SPOTIPY_REDIRECT_URI: str | None = os.getenv("SPOTIPY_REDIRECT_URI")
 
-# Data File Paths
 PROJECT_ROOT = Path(__file__).resolve().parent
 DATA_DIR = PROJECT_ROOT / "data"
 FETCHED_SONGS_FILE = DATA_DIR / "youtube_songs_fetched.csv"
@@ -67,7 +65,6 @@ def validate_configuration() -> bool:
 
 
 if __name__ == "__main__":
-    # For testing the config loading
     if validate_configuration():
         print("Configuration loaded successfully.")
         print(

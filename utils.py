@@ -14,9 +14,9 @@ from youtube_title_parse import get_artist_title
 
 # Assuming config.py is in the same directory or accessible via PYTHONPATH
 import config
+import sys
 
 
-# Configure basic logging
 def setup_logging() -> None:
     """
     Configures basic logging for the application.
@@ -25,17 +25,37 @@ def setup_logging() -> None:
     # Ensure a data directory exists for the log file
     ensure_data_directory_exists()
 
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
-        handlers=[
-            logging.FileHandler(config.APP_ERROR_LOG_FILE),
-            logging.StreamHandler(),  # To also log to console
-        ],
+    # Configure the root logger
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.INFO)
+
+    # File Handler (always UTF-8)
+    file_handler = logging.FileHandler(config.APP_ERROR_LOG_FILE, encoding="utf-8")
+    file_handler.setLevel(logging.INFO)  # Or your desired level for file
+    file_formatter = logging.Formatter(
+        "%(asctime)s - %(levelname)s - %(name)s - %(module)s - %(message)s"
     )
-    # Suppress overly verbose logs from underlying libraries if needed
+    file_handler.setFormatter(file_formatter)
+
+    # Console Stream Handler
+    # Attempt to use UTF-8 and replace characters that cannot be displayed
+    # to prevent the UnicodeEncodeError on the console.
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setLevel(logging.INFO)
+    console_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    console_handler.setFormatter(console_formatter)
+
+    # For the Windows console, set encoding to UTF-8
+    if hasattr(console_handler.stream, "reconfigure"):
+        console_handler.stream.reconfigure(encoding="utf-8")
+
+    root_logger.addHandler(file_handler)
+    root_logger.addHandler(console_handler)
+
+    # Suppress overly verbose logs from underlying libraries
     logging.getLogger("googleapiclient.discovery_cache").setLevel(logging.ERROR)
     logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
+    logging.getLogger("spotipy").setLevel(logging.INFO)
 
 
 def ensure_data_directory_exists() -> None:
@@ -54,7 +74,6 @@ def ensure_data_directory_exists() -> None:
             f"Could not create data directory: {config.DATA_DIR}. Error: {e}",
             exc_info=True,
         )
-        # Potentially raise the exception if directory creation is critical
         raise
 
 
@@ -218,9 +237,13 @@ if __name__ == "__main__":
             "Complex Artist",
         ),
         ("[Special Clip] IU(아이유)_Dear Name(이름에게)", "1theK (원더케이)"),
-        ("Main Rahoon Ya Na Rahoon Full', 'Emraan Hashmi, Esha Gupta | Amaal Mallik, Armaan Malik", "T-Series"),
+        (
+            "Main Rahoon Ya Na Rahoon Full', 'Emraan Hashmi, Esha Gupta | Amaal Mallik, Armaan Malik",
+            "T-Series",
+        ),
         ("Jashn-E-Bahara - Jodhaa Akbar | Anumita Nadesan", "Anumita Nadesan"),
-        ("[IU] 'Love poem' Live Clip", "이지금 [IU Official]")
+        ("[IU] 'Love poem' Live Clip", "이지금 [IU Official]"),
+        ("[MV] IU(아이유) _ eight(에잇) (Prod.&Feat. SUGA of BTS)", "1theK (원더케이)"),
     ]
 
     for title, channel in test_titles:
